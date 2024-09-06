@@ -20,7 +20,7 @@ public MessageController(MessageService messageService,UserService userService){
     this.sc = new Scanner(System.in);
 }
 
-public void handleMessageManagement(){
+public void handleMessageManagement() throws UserNotFound {
     boolean running = true;
     while (running){
         System.out.println("Choose an action:\n" +
@@ -45,7 +45,7 @@ public void handleMessageManagement(){
         }
     }
 }
-    private void sendMessage(){
+    private void sendMessage() throws UserNotFound {
     System.out.println("Enter sender ID: ");
     Long senderId = sc.nextLong();
     System.out.println("Enter receiver ID:");
@@ -54,8 +54,10 @@ public void handleMessageManagement(){
     System.out.println("Enter message: ");
     String content = sc.nextLine();
     Message message = new Message();
-    message.setSenderId(senderId);
-    message.setReceiverId(receiverId);
+    User sender = userService.getUserById(senderId);
+    User receiver = userService.getUserById(receiverId);
+    message.setSender(sender);
+    message.setReceiver(receiver);
     message.setContent(content);
     message.setTimestamp(LocalDateTime.now());
     System.out.println("Message: " + message.toString());
