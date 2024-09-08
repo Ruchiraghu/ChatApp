@@ -17,8 +17,8 @@ public class MessageService {
 //        System.out.println("Message sent to "+message.getReceiverId());
 
     }
-    public List<Message> getAllMessageByUserId(Long userId){
-        return messageDao.getAllMessageByUserId(userId);
+    public List<Message> getAllMessageByRecipientId(Long recipientId){
+        return messageDao.getAllMessageByRecipientId(recipientId);
     }
 
     public List<Message> getConversation(Long userId1,Long userId2){
@@ -40,7 +40,10 @@ public class MessageService {
         }
     }
     public List<Message> getRecentMessages(int limit){
+
         return messageDao.getRecentMessages(limit);
     };
-
+    public List<Message> getMessagesByGroup(int groupId) {
+        return messageDao.getMessagesByGroup(groupId);
+    }
 }

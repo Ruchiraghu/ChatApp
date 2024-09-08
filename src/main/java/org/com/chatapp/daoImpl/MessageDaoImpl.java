@@ -2,6 +2,7 @@ package org.com.chatapp.daoImpl;
 
 import org.com.chatapp.dao.MessageDao;
 import org.com.chatapp.entities.Message;
+import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,22 +11,22 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 public class MessageDaoImpl implements MessageDao {
-    private EntityManagerFactory entityManagerFactory;
+    private final EntityManagerFactory entityManagerFactory;
 
-    public MessageDaoImpl(){
+    public MessageDaoImpl() {
         this.entityManagerFactory = Persistence.createEntityManagerFactory("chatUnit");
     }
 
     @Override
     public void sendMessage(Message message) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction trx =  entityManager.getTransaction();
+        EntityTransaction trx = entityManager.getTransaction();
         try {
             trx.begin();
             entityManager.persist(message);
             trx.commit();
         } catch (Exception e) {
-            if (trx != null && trx.isActive()) {
+            if (trx.isActive()) {
                 trx.rollback();
             }
             e.printStackTrace();
@@ -47,12 +48,12 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public List<Message> getAllMessageByUserId(Long userId) {
+    public List<Message> getAllMessageByRecipientId(Long recipientId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         List<Message> messages = null;
         try {
-            messages = entityManager.createQuery("SELECT m FROM Message m WHERE m.sender.id = :userId OR m.receiver.id = :userId", Message.class)
-                    .setParameter("userId", userId)
+            messages = entityManager.createQuery("SELECT m FROM Message m WHERE m.receiver.id = :recipientId", Message.class)
+                    .setParameter("recipientId", recipientId)
                     .getResultList();
         } finally {
             entityManager.close();
@@ -78,32 +79,32 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public boolean deleteMessageById(Long id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction trx = null;
+        EntityTransaction trx = entityManager.getTransaction();
+        boolean isDeleted = false;
         try {
-            trx = entityManager.getTransaction();
             trx.begin();
             Message message = entityManager.find(Message.class, id);
             if (message != null) {
                 entityManager.remove(message);
+                isDeleted = true;
             }
             trx.commit();
         } catch (Exception e) {
-            if (trx != null && trx.isActive()) {
+            if (trx.isActive()) {
                 trx.rollback();
             }
             e.printStackTrace();
         } finally {
             entityManager.close();
         }
-        return true; // Return true if the deletion was successful
+        return isDeleted;
     }
 
     @Override
     public void updateMessage(Long id, String newContent) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction trx = null;
+        EntityTransaction trx = entityManager.getTransaction();
         try {
-            trx = entityManager.getTransaction();
             trx.begin();
             Message message = entityManager.find(Message.class, id);
             if (message != null) {
@@ -112,7 +113,7 @@ public class MessageDaoImpl implements MessageDao {
             }
             trx.commit();
         } catch (Exception e) {
-            if (trx != null && trx.isActive()) {
+            if (trx.isActive()) {
                 trx.rollback();
             }
             e.printStackTrace();
@@ -132,6 +133,34 @@ public class MessageDaoImpl implements MessageDao {
         } finally {
             entityManager.close();
         }
+        return messages;
+    }
+    public List<Message> getMessagesByGroup(int groupId) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<Message> messages = null;
+
+        try {
+            // Start a transaction for consistency
+            EntityTransaction transaction = entityManager.getTransaction();
+            transaction.begin();
+
+            // Execute the query to get messages by group ID
+            messages = entityManager.createQuery(
+                            "SELECT m FROM Message m WHERE m.group.id = :groupId", Message.class)
+                    .setParameter("groupId", groupId)
+                    .getResultList();
+
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+        } finally {
+            entityManager.close();
+        }
+
         return messages;
     }
 }

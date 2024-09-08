@@ -1,4 +1,5 @@
 package org.com.chatapp.controller;
+
 import org.com.chatapp.entities.User;
 import org.com.chatapp.exception_handling.UserNotFound;
 import org.com.chatapp.service.MessageService;
@@ -14,85 +15,78 @@ public class MessageController {
     private final MessageService messageService;
     private final UserService userService;
     private final Scanner sc;
-public MessageController(MessageService messageService,UserService userService){
-    this.messageService = messageService;
-    this.userService = userService;
-    this.sc = new Scanner(System.in);
-}
 
-public void handleMessageManagement() throws UserNotFound {
-    boolean running = true;
-    while (running){
-        System.out.println("Choose an action:\n" +
-                "1.Send a message\n" +
-                "2.Get messages by recipient\n"+
-                "3.Delete a message\n"+
-                "4.Get message content\n"+
-                "5.List all messages\n"+
-                "6.Exit");
-        int choice =sc.nextInt();
-        sc.nextLine();
-        switch (choice){
-            case 1->sendMessage();
-            case 2->getMessagesByRecipient();
-            case 3->deleteMessage();
-            case 4->getMessagesByContent();
-            case 5->listAllMessages();
-            case 6->{running =false;
-                System.out.println("Exiting...");
+    public MessageController(MessageService messageService, UserService userService) {
+        this.messageService = messageService;
+        this.userService = userService;
+        this.sc = new Scanner(System.in);
+    }
+
+    public void handleMessageManagement() throws UserNotFound {
+        boolean running = true;
+        while (running) {
+            System.out.println("Choose an action:\n" +
+                    "1. Send a message\n" +
+                    "2. Get messages by recipient\n" +
+                    "3. Delete a message\n" +
+                    "4. Exit");
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
+                case 1 -> sendMessage();
+                case 2 -> getMessagesByRecipient();
+                case 3 -> deleteMessage();
+                case 4 -> {
+                    running = false;
+                    System.out.println("Exiting...");
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
             }
-            default->System.out.println("Invalid choice. Please try again.");
         }
     }
-}
+
     private void sendMessage() throws UserNotFound {
-    System.out.println("Enter sender ID: ");
-    Long senderId = sc.nextLong();
-    System.out.println("Enter receiver ID:");
-    Long receiverId = sc.nextLong();
-    sc.nextLine();
-    System.out.println("Enter message: ");
-    String content = sc.nextLine();
-    Message message = new Message();
-    User sender = userService.getUserById(senderId);
-    User receiver = userService.getUserById(receiverId);
-    message.setSender(sender);
-    message.setReceiver(receiver);
-    message.setContent(content);
-    message.setTimestamp(LocalDateTime.now());
-    System.out.println("Message: " + message.toString());
-    messageService.sendMessage(message);
-    System.out.println("Message sent successfully!");
-}
-    private void listAllMessages() {
-        System.out.println("Enter userId to list messages: ");
-        Long userId = sc.nextLong();
+        System.out.println("Enter sender ID: ");
+        Long senderId = sc.nextLong();
+        System.out.println("Enter receiver ID:");
+        Long receiverId = sc.nextLong();
         sc.nextLine();
-        List<Message> messages = messageService.getAllMessageByUserId(userId);
-        messages.forEach(System.out::println);
+        System.out.println("Enter message: ");
+        String content = sc.nextLine();
+
+        User sender = userService.getUserById(senderId);
+        User receiver = userService.getUserById(receiverId);
+
+        if (sender == null || receiver == null) {
+            throw new UserNotFound("Sender or receiver not found.");
+        }
+
+        Message message = new Message();
+        message.setSender(sender);
+        message.setReceiver(receiver);
+        message.setContent(content);
+        message.setTimestamp(LocalDateTime.now());
+
+        messageService.sendMessage(message);
+        System.out.println("Message sent successfully!");
     }
 
-    private void deleteMessage(){
+    private void deleteMessage() {
         System.out.println("Enter message ID to delete: ");
         Long id = sc.nextLong();
         sc.nextLine();
         messageService.deleteMessage(id);
     }
-
-    private void getMessagesByContent() {
-        System.out.println("Enter recipient ID: ");
-        Long recipientId = sc.nextLong();
-        sc.nextLine();
-        List<Message> messages = messageService.getAllMessageByUserId(recipientId);
-        messages.forEach(System.out::println);
-    }
-
     private void getMessagesByRecipient() {
         System.out.println("Enter recipient ID: ");
         Long recipientId = sc.nextLong();
         sc.nextLine();
-        List<Message> messages = messageService.getAllMessageByUserId(recipientId);
-        messages.forEach(System.out::println);
+        List<Message> messages = messageService.getAllMessageByRecipientId(recipientId);
+        if (messages.isEmpty()) {
+            System.out.println("No messages found for this recipient.");
+        } else {
+            messages.forEach(System.out::println);
+        }
     }
 
     public void chatBetweenUsers() throws UserNotFound {
@@ -122,8 +116,8 @@ public void handleMessageManagement() throws UserNotFound {
             }
 
             Message msg1 = new Message();
-            msg1.setSenderId(userId1);
-            msg1.setReceiverId(userId2);
+            msg1.setSender(user1);
+            msg1.setReceiver(user2);
             msg1.setContent(message1);
             msg1.setTimestamp(LocalDateTime.now());
             messageService.sendMessage(msg1);
@@ -137,8 +131,8 @@ public void handleMessageManagement() throws UserNotFound {
             }
 
             Message msg2 = new Message();
-            msg2.setSenderId(userId2);
-            msg2.setReceiverId(userId1);
+            msg2.setSender(user2);
+            msg2.setReceiver(user1);
             msg2.setContent(message2);
             msg2.setTimestamp(LocalDateTime.now());
             messageService.sendMessage(msg2);
@@ -146,6 +140,4 @@ public void handleMessageManagement() throws UserNotFound {
 
         System.out.println("Chat ended.");
     }
-
-
 }

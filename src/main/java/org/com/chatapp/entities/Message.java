@@ -10,26 +10,38 @@ public class Message {
     private Long id;
     @Column(nullable = false)
     private String content;
-    @Column(name = "sender_id", insertable = false, updatable = false)
-    private Long senderId;
-    @ManyToOne
-    @JoinColumn(name = "sender_id", insertable = false, updatable = false)
-    private User sender;
-    @Column(name = "receiver_id", insertable = false, updatable = false)
-    private Long receiverId;
-    @ManyToOne
-    @JoinColumn(name = "receiver_id", insertable = false, updatable = false)
-    private User receiver;
-    private LocalDateTime timestamp;
-    public Message(){}
 
-    public Message(Long id, String content, User sender, User receiver, Long senderId, Long receiverId, LocalDateTime timestamp) {
+    @ManyToOne
+    @JoinColumn(name = "sender_id", nullable = false)  // Remove insertable = false, updatable = false
+    private User sender;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_id", nullable = false)  // Remove insertable = false, updatable = false
+    private User receiver;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private GroupChat groupChat;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @Column(columnDefinition = "TEXT")
+    private String message;
+    private LocalDateTime timestamp;
+
+    public Message() {}
+
+    public Message(Long id,String content, User sender, User receiver, LocalDateTime timestamp) {
         this.id = id;
         this.content = content;
         this.sender = sender;
         this.receiver = receiver;
-        this.senderId = senderId;
-        this.receiverId = receiverId;
         this.timestamp = timestamp;
     }
 
@@ -69,24 +81,16 @@ public class Message {
         return timestamp;
     }
 
-    public Long getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(Long senderId) {
-        this.senderId = senderId;
-    }
-
-    public Long getReceiverId() {
-        return receiverId;
-    }
-
-    public void setReceiverId(Long receiverId) {
-        this.receiverId = receiverId;
-    }
-
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public GroupChat getGroupChat() {
+        return groupChat;
+    }
+
+    public void setGroupChat(GroupChat groupChat) {
+        this.groupChat = groupChat;
     }
 
     @Override
@@ -99,6 +103,4 @@ public class Message {
                 ", timestamp=" + timestamp +
                 '}';
     }
-
-
 }
