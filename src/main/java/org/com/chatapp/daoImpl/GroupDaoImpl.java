@@ -49,22 +49,6 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
-    public GroupChat getGroupByName(String name) {
-        EntityManager entityManager = getEntityManager();
-        GroupChat group = null;
-        try {
-            group = entityManager.createQuery("SELECT g FROM GroupChat g WHERE g.name = :name", GroupChat.class)
-                    .setParameter("name", name)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            // Handle the case where no result is found, e.g., log or return null
-        } finally {
-            entityManager.close();
-        }
-        return group;
-    }
-
-    @Override
     public List<GroupChat> getAllGroups() {
         EntityManager entityManager = getEntityManager();
         List<GroupChat> groups;
@@ -76,23 +60,7 @@ public class GroupDaoImpl implements GroupDao {
         return groups;
     }
 
-    @Override
-    public void updateGroup(GroupChat groupChat) {
-        EntityManager entityManager = getEntityManager();
-        EntityTransaction tx = entityManager.getTransaction();
-        try {
-            tx.begin();
-            entityManager.merge(groupChat);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            throw e;  // Consider using a logger
-        } finally {
-            entityManager.close();
-        }
-    }
+
 
     public void addUsersToGroup(Long groupId, List<Long> userIds) {
         EntityManager em = getEntityManager();

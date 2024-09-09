@@ -33,7 +33,8 @@ public class GroupController {
                     2. Add Users to Group
                     3. View Messages by Group
                     4. Group Chat
-                    5. Exit""");
+                    5. View All Groups
+                    6. Exit""");
             int choice = sc.nextInt();
             sc.nextLine();  // Consume newline
 
@@ -47,7 +48,8 @@ public class GroupController {
                     viewMessagesByGroup(groupId);
                 }
                 case 4 -> doGroupChatting();
-                case 5 -> {
+                case 5 -> viewAllGroups();
+                case 6 -> {
                     running = false;
                     System.out.println("Exiting...");
                 }
@@ -55,6 +57,23 @@ public class GroupController {
             }
         }
     }
+    private void viewAllGroups() {
+        List<GroupChat> groups = groupService.viewAllGroups();  // Assuming getAllGroups() method exists in GroupService
+        System.out.println("+----------------------------------------------------------------------+");
+        System.out.println("|        List of Groups                                                |");
+        System.out.println("+----------------------------------------------------------------------+");
+        System.out.println("|  Group ID  |   Group Name                                            |");
+        System.out.println("+----------------------------------------------------------------------+");
+
+        for (GroupChat group : groups) {
+            System.out.printf("|%10d | %-57s|\n", group.getId(), group.getName());
+        }
+
+        System.out.println("+----------------------------------------------------------------------+");
+
+    }
+
+
 
     private void viewMessagesByGroup(Long groupId) {
         // Call service to get messages by group

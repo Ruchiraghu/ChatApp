@@ -23,4 +23,7 @@ public class GroupService {
     public void addUsersToGroup(Long groupId, List<Long> userIds) {
         groupDao.addUsersToGroup(groupId, userIds);
     }
+    public List<GroupChat> viewAllGroups(){
+        return groupDao.getAllGroups();
+    }
 }

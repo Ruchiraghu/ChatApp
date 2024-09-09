@@ -5,34 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3510d58b-b3a0-4e1c-a101-bc5ba381d982" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/config/AppConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/controller/ChatRoomController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/controller/MessageController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/dao/ChatRoomDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/dao/MessageDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/dao/UserDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/daoImpl/ChatRoomDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/daoImpl/MessageDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/daoImpl/UserDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/entities/ChatRoom.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/entities/Message.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/entities/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/exception_handling/ChatRoomNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/exception_handling/CustomException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/exception_handling/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/exception_handling/MessageNotFound.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/exception_handling/StatusNotFound.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/exception_handling/UserNotFound.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/main/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/service/ChatRoomService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/service/MessageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/utility/DateUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/utility/HibernateUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/utility/ScannerUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/utility/SecurityUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/com/chatapp/controller/GroupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/controller/GroupController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/com/chatapp/dao/GroupDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/dao/GroupDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/com/chatapp/daoImpl/GroupDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/daoImpl/GroupDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/com/chatapp/service/GroupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/com/chatapp/service/GroupService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +28,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="jar://$USER_HOME$/.jdks/openjdk-22.0.2/lib/src.zip!/java.base/java/lang/Long.java" root0="SKIP_INSPECTION" />
@@ -82,7 +60,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "last_opened_file_path": "C:/web development/AdvanceJava/AdvanceJava/chattingApp",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices"
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
   },
   "keyToStringList": {
     "ChangesTree.GroupingKeys": [
