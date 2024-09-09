@@ -8,41 +8,31 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(name = "content")
     private String content;
-
-    @ManyToOne
-    @JoinColumn(name = "sender_id", nullable = false)  // Remove insertable = false, updatable = false
-    private User sender;
-
-    @ManyToOne
-    @JoinColumn(name = "receiver_id", nullable = false)  // Remove insertable = false, updatable = false
-    private User receiver;
 
     @ManyToOne
     @JoinColumn(name = "group_id")
     private GroupChat groupChat;
 
-    public String getMessage() {
-        return message;
-    }
+    @ManyToOne
+    @JoinColumn(name = "sender_id")  // Remove insertable = false, updatable = false
+    private User sender;
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    @Column(columnDefinition = "TEXT")
-    private String message;
+    @ManyToOne
+    @Transient
+    @JoinColumn(name = "receiver_id")  // Remove insertable = false, updatable = false
+    private User receiver;
     private LocalDateTime timestamp;
-
     public Message() {}
 
-    public Message(Long id,String content, User sender, User receiver, LocalDateTime timestamp) {
+    public Message(Long id,String content, User sender, User receiver, LocalDateTime timestamp, GroupChat groupChat) {
         this.id = id;
         this.content = content;
         this.sender = sender;
         this.receiver = receiver;
         this.timestamp = timestamp;
+        this.groupChat = groupChat;
     }
 
     public Long getId() {
@@ -92,7 +82,11 @@ public class Message {
     public void setGroupChat(GroupChat groupChat) {
         this.groupChat = groupChat;
     }
-
+    // @PrePersist method to automatically set the timestamp before saving
+    @PrePersist
+    public void prePersist() {
+        this.timestamp = LocalDateTime.now();
+    }
     @Override
     public String toString() {
         return "Message{" +

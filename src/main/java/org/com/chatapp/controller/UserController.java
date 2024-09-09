@@ -21,22 +21,20 @@ public class UserController {
             System.out.println("\nChoose an action:\n" +
                     "1. Register a new user\n" +
                     "2. Get user by ID\n" +
-                    "3. Get user by username\n" +
-                    "4. List all users\n" +
-                    "5. Update user\n" +
-                    "6. Delete user\n" +
-                    "7. Back to the main menu");
+                    "3. List all users\n" +
+                    "4. Update user\n" +
+                    "5. Delete user\n" +
+                    "6. Back to the main menu");
             int choice = sc.nextInt();
             sc.nextLine();  // Consume newline
 
             switch (choice) {
                 case 1 -> registerUser();
                 case 2 -> getUserById();
-                case 3 -> getUserByUsername();
-                case 4 -> listAllUsers();
-                case 5 -> updateUser();
-                case 6 -> deleteUser();
-                case 7 ->running = false;
+                case 3 -> listAllUsers();
+                case 4 -> updateUser();
+                case 5 -> deleteUser();
+                case 6 ->running = false;
                 default -> System.out.println("Invalid choice. Please try again.");
             }
         }
@@ -50,13 +48,7 @@ public class UserController {
         String username = sc.nextLine();
         System.out.println("Enter password:");
         String password = sc.nextLine();
-
-
-        User user = new User();
-        user.setName(name);
-        user.setUsername(username);
-        user.setPassword(password);
-        userService.saveUser(user);
+        userService.registerUser(name,username,password);
         System.out.println("User registered successfully.");
     }
 

@@ -12,11 +12,11 @@ public class GroupService {
         this.groupDao = groupDao;
     }
 
-    public void createGroup(GroupChat group) {
-        groupDao.addGroup(group);
+    public void createGroup(GroupChat groupChat) {
+        groupDao.addGroup(groupChat);
     }
 
-    public GroupChat getGroup(int id) {
+    public GroupChat getGroup(Long id)  {
         return groupDao.getGroup(id);
     }
 
@@ -26,5 +26,12 @@ public class GroupService {
 
     public List<GroupChat> getAllGroups() {
         return groupDao.getAllGroups();
+    }
+
+    public void updateGroup(GroupChat existingGroup) {
+        groupDao.updateGroup(existingGroup);
+    }
+    public void addUsersToGroup(Long groupId, List<Long> userIds) {
+        groupDao.addUsersToGroup(groupId, userIds);
     }
 }

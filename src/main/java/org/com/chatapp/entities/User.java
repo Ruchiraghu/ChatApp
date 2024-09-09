@@ -1,7 +1,9 @@
 package org.com.chatapp.entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -15,11 +17,15 @@ public class User {
     private String password;
     @Column(name = "name")  // Add this line if 'name' is a required field in your schema
     private String name;
+    @ManyToMany(mappedBy = "users")
+    private Set<GroupChat> groups=new HashSet<>();
     //    default constructor
+
     public User(){}
 
     //    parameterized constructor
-    public User( String username, String password, String name) {
+    public User( Long id,String username, String password, String name) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
@@ -28,7 +34,7 @@ public class User {
 //    getter and setters
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -70,17 +76,17 @@ public class User {
                 ", name='" + name + '\'' +
                 '}';
     }
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(password, user.password);
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password);
+        return Objects.hash(id);
     }
+
 }

@@ -13,6 +13,6 @@ public interface MessageDao {
     boolean deleteMessageById(Long id);
     void updateMessage(Long id,String newContent);
     List<Message> getRecentMessages(int limit);
-    List<Message> getMessagesByGroup(int groupId);
+    List<Message> getMessagesByGroup(Long groupId);
 }
 

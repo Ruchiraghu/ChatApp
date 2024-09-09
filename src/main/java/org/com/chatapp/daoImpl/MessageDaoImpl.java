@@ -2,7 +2,6 @@ package org.com.chatapp.daoImpl;
 
 import org.com.chatapp.dao.MessageDao;
 import org.com.chatapp.entities.Message;
-import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -135,7 +134,7 @@ public class MessageDaoImpl implements MessageDao {
         }
         return messages;
     }
-    public List<Message> getMessagesByGroup(int groupId) {
+    public List<Message> getMessagesByGroup(Long groupId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         List<Message> messages = null;
 
@@ -146,7 +145,7 @@ public class MessageDaoImpl implements MessageDao {
 
             // Execute the query to get messages by group ID
             messages = entityManager.createQuery(
-                            "SELECT m FROM Message m WHERE m.group.id = :groupId", Message.class)
+                            "SELECT m FROM Message m WHERE m.groupChat.id = :groupId", Message.class)
                     .setParameter("groupId", groupId)
                     .getResultList();
 

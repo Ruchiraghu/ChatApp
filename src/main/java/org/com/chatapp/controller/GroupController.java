@@ -8,9 +8,7 @@ import org.com.chatapp.service.GroupService;
 import org.com.chatapp.service.MessageService;
 import org.com.chatapp.service.UserService;
 
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class GroupController {
     private final MessageService messageService;
@@ -32,15 +30,22 @@ public class GroupController {
                     "1. Create group\n" +
                     "2. Add Users to Group\n" +
                     "3. View Messages by Group\n" +
-                    "4. Exit");
+                    "4. Group Chat\n" +
+                    "5. Exit");
             int choice = sc.nextInt();
             sc.nextLine();  // Consume newline
 
             switch (choice) {
-                case 1 -> createGroupChat();
-                case 2 -> joinGroupChat();
-                case 3 -> viewMessagesByGroup();
-                case 4 -> {
+                case 1 -> createGroup();
+                case 2 -> addUsersToGroup();
+                case 3 -> {
+                    System.out.println("Enter group ID to view messages:");
+                    Long groupId = sc.nextLong();
+                    sc.nextLine(); // Consume newline
+                    viewMessagesByGroup(groupId);
+                }
+                case 4 -> doGroupChatting();
+                case 5 -> {
                     running = false;
                     System.out.println("Exiting...");
                 }
@@ -49,36 +54,24 @@ public class GroupController {
         }
     }
 
-    private void viewMessagesByGroup() {
-        System.out.println("Enter group ID:");
-        int gId = sc.nextInt();
-        List<Message> groupMessages = messageService.getMessagesByGroup(gId);
-        for (Message msg : groupMessages) {
-            System.out.println(msg.getTimestamp() + " - " + (msg.getSender() != null ? msg.getSender().getName() : "Unknown") + ": " + msg.getMessage());
-        }
-    }
+    private void viewMessagesByGroup(Long groupId) {
+        // Call service to get messages by group
+        List<Message> groupMessages = messageService.getMessagesByGroup(groupId);
+        if (groupMessages != null && !groupMessages.isEmpty()) {
+            for (Message message : groupMessages) {
+                // Assuming you have methods to get the sender's name and message content
+                String senderName = message.getSender().getName();
+                String content = message.getContent();
 
-    private void joinGroupChat() throws UserNotFound {
-        System.out.println("Enter group ID:");
-        int grpId = sc.nextInt();
-        sc.nextLine();  // Consume newline
-        System.out.println("Enter user IDs to add to group (comma separated):");
-        String[] userIds = sc.nextLine().split(",");
-        GroupChat existingGroup = groupService.getGroup(grpId);
-        Set<User> users = existingGroup.getUsers();
-        for (String idStr : userIds) {
-            int userId = Integer.parseInt(idStr.trim());
-            User user = userService.getUserById(Long.valueOf(userId));
-            if (user != null) {
-                users.add(user);
+                System.out.println(senderName + ": " + content);
             }
+        } else {
+            System.out.println("No messages found for this group.");
         }
-        existingGroup.setUsers(users);
-        groupService.createGroup(existingGroup); // Save updated group
-        System.out.println("Users added to group.");
     }
 
-    private void createGroupChat() {
+
+    private void createGroup() {
         System.out.println("Enter group name:");
         String groupName = sc.nextLine();
         GroupChat group = new GroupChat();
@@ -87,4 +80,91 @@ public class GroupController {
         System.out.println("Group created successfully.");
     }
 
+    private void doGroupChatting() throws UserNotFound {
+        System.out.println("Enter group ID to join the chat:");
+        Long groupId = sc.nextLong();
+        sc.nextLine();  // Consume newline
+
+        GroupChat group = groupService.getGroup(groupId);
+        if (group == null) {
+            System.out.println("Group not found.");
+            return;
+        }
+
+        System.out.println("You have joined the group: " + group.getName());
+
+        boolean chatting = true;
+        while (chatting) {
+            System.out.println("Choose an action:\n" +
+                    "1. Send message\n" +
+                    "2. View all messages\n" +
+                    "3. Exit chat");
+            int choice = sc.nextInt();
+            sc.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1 -> sendMessageToGroup(groupId);
+                case 2 -> viewMessagesByGroup(groupId);
+                case 3 -> {
+                    chatting = false;
+                    System.out.println("Exiting group chat...");
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+
+    private void sendMessageToGroup(Long groupId) throws UserNotFound {
+        System.out.println("Enter your user ID:");
+        Long userId = sc.nextLong();
+        sc.nextLine();  // Consume newline
+
+        User sender = userService.getUserById(userId);
+        if (sender == null) {
+            throw new UserNotFound("User not found with ID: " + userId);
+        }
+
+        System.out.println("Enter your message:");
+        String messageText = sc.nextLine();
+
+        GroupChat group = groupService.getGroup(groupId);
+        if (group == null) {
+            System.out.println("Group not found.");
+            return;
+        }
+
+        Message message = new Message();
+        message.setSender(sender);
+        message.setContent(messageText);
+        message.setGroupChat(group);  // Set the groupChat, not groupId
+
+        messageService.sendMessage(message);
+
+        System.out.println("Message sent to the group.");
+    }
+
+    public void addUsersToGroup() {
+        System.out.print("Enter Group ID: ");
+        Long groupId = sc.nextLong();
+
+        System.out.print("Enter number of users to add: ");
+        int numberOfUsers = sc.nextInt();
+        sc.nextLine(); // Consume newline
+
+        if (numberOfUsers <= 0) {
+            System.out.println("Number of users must be greater than zero.");
+            return;
+        }
+
+        List<Long> userIds = new ArrayList<>();
+        for (int i = 0; i < numberOfUsers; i++) {
+            System.out.print("Enter User ID: ");
+            Long userId = sc.nextLong();
+            userIds.add(userId);
+        }
+
+        groupService.addUsersToGroup(groupId, userIds);
+
+        System.out.println("Users added to the group successfully.");
+    }
 }

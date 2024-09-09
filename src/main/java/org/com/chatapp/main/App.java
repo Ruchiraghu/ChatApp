@@ -34,19 +34,17 @@ public class App {
         while (true) {
             System.out.println("Welcome to the Chat Application!\n" +
                     "1. User Management\n" +
-                    "2. Message Management\n" +
-                    "3. Chat between two Users\n" +
-                    "4. Chat Room\n" +
-                    "5. Exit");
+                    "2. Chat between two Users\n" +
+                    "3. Group chat\n" +
+                    "4. Exit");
 
             int choice = ScannerUtil.getInt("Choose an option:");
 
             switch (choice) {
                 case 1->userController.handleUserManagement();
-                case 2->messageController.handleMessageManagement();
-                case 3->messageController.chatBetweenUsers();
-                case 4-> groupController.groupChat();
-                case 5->{System.out.println("Exiting the application.");
+                case 2->messageController.chatBetweenUsers();
+                case 3-> groupController.groupChat();
+                case 4->{System.out.println("Exiting the application.");
                     return;
                 }
                 default->System.out.println("Invalid option. Please try again.");

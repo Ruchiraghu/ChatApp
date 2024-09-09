@@ -43,7 +43,7 @@ public class MessageService {
 
         return messageDao.getRecentMessages(limit);
     };
-    public List<Message> getMessagesByGroup(int groupId) {
+    public List<Message> getMessagesByGroup(Long groupId) {
         return messageDao.getMessagesByGroup(groupId);
     }
 }
