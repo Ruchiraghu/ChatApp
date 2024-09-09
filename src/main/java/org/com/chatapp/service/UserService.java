@@ -7,7 +7,7 @@ import org.com.chatapp.exception_handling.UserNotFound;
 import java.util.List;
 
 public class UserService {
-    private UserDao userDao;
+    private final UserDao userDao;
 
     public UserService(UserDao userDao){
         this.userDao = userDao;
@@ -28,14 +28,6 @@ public class UserService {
         User user = userDao.getUserById(id);
         if (user == null) {
             throw new UserNotFound("User not found with ID: " + id);
-        }
-        return user;
-    }
-
-    public User getUserByUsername(String username) throws UserNotFound {
-        User user = userDao.getUserByUsername(username);
-        if (user == null) {
-            throw new UserNotFound("User not found with username: " + username);
         }
         return user;
     }
@@ -63,11 +55,4 @@ public class UserService {
         return userDao.getUserByUsername(username) != null;
     }
 
-    public User authenticateUser(String username, String password) throws UserNotFound {
-        User user = userDao.getUserByUsername(username);
-        if (user == null || !user.getPassword().equals(password)) {
-            throw new UserNotFound("Invalid username or password");
-        }
-        return user;
-    }
 }

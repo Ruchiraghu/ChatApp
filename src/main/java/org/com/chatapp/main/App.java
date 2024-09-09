@@ -32,11 +32,12 @@ public class App {
     private static final GroupController groupController = new GroupController(messageService,groupService,userService,sc);
     public static void main(String[] args) throws UserNotFound {
         while (true) {
-            System.out.println("Welcome to the Chat Application!\n" +
-                    "1. User Management\n" +
-                    "2. Chat between two Users\n" +
-                    "3. Group chat\n" +
-                    "4. Exit");
+            System.out.println("""
+                    Welcome to the Chat Application!
+                    1. User Management
+                    2. Chat between two Users
+                    3. Group chat
+                    4. Exit""");
 
             int choice = ScannerUtil.getInt("Choose an option:");
 

@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
-    private EntityManagerFactory entityManagerFactory;
+    private final EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager = null;
     private EntityTransaction trx = null;
 
@@ -39,7 +39,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(Long id) throws UserNotFound {
-        User user = null;
+        User user;
         try {
             entityManager = entityManagerFactory.createEntityManager();
             user = entityManager.find(User.class, id);
@@ -56,7 +56,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByUsername(String username) throws UserNotFound {
-        User user = null;
+        User user;
         try {
             entityManager = entityManagerFactory.createEntityManager();
             user = entityManager.createQuery("FROM User WHERE username = :username", User.class)
@@ -143,8 +143,8 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public List<User> getAllUsers() throws UserNotFound {
-        List<User> users = null;
+    public List<User> getAllUsers() {
+        List<User> users;
         try {
             entityManager = entityManagerFactory.createEntityManager();
             users = entityManager.createQuery("FROM User", User.class)
@@ -164,7 +164,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User authenticateUser(String username, String password) throws UserNotFound {
-        User user = null;
+        User user;
         try {
             entityManager = entityManagerFactory.createEntityManager();
             user = entityManager.createQuery("FROM User WHERE username = :username AND password = :password", User.class)

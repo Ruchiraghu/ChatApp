@@ -18,13 +18,15 @@ public class UserController {
     public void handleUserManagement() throws UserNotFound {
         boolean running = true;
         while (running) {
-            System.out.println("\nChoose an action:\n" +
-                    "1. Register a new user\n" +
-                    "2. Get user by ID\n" +
-                    "3. List all users\n" +
-                    "4. Update user\n" +
-                    "5. Delete user\n" +
-                    "6. Back to the main menu");
+            System.out.println("""
+
+                    Choose an action:
+                    1. Register a new user
+                    2. Get user by ID
+                    3. List all users
+                    4. Update user
+                    5. Delete user
+                    6. Back to the main menu""");
             int choice = sc.nextInt();
             sc.nextLine();  // Consume newline
 
@@ -64,17 +66,6 @@ public class UserController {
         }
     }
 
-    private void getUserByUsername() throws UserNotFound {
-        System.out.println("Enter username:");
-        String username = sc.nextLine();
-        User user = userService.getUserByUsername(username);
-        if (user != null) {
-            System.out.println(user);
-        } else {
-            System.out.println("User not found.");
-        }
-    }
-
     private void listAllUsers() throws UserNotFound {
         userService.getAllUsers().forEach(System.out::println);
     }
@@ -99,24 +90,25 @@ public class UserController {
         scanner.nextLine();  // Consume the newline character
 
         switch (choice) {
-            case 1:
+            case 1 -> {
                 System.out.println("Enter new username:");
                 String newUsername = scanner.nextLine();
                 user.setUsername(newUsername);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 System.out.println("Enter new password:");
                 String newPassword = scanner.nextLine();
                 user.setPassword(newPassword);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 System.out.println("Enter new name:");
                 String newName = scanner.nextLine();
                 user.setName(newName);
-                break;
-            default:
+            }
+            default -> {
                 System.out.println("Invalid choice!");
                 return;
+            }
         }
 
         userService.updateUser(user);

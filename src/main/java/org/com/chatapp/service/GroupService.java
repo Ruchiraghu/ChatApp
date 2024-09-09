@@ -6,7 +6,7 @@ import org.com.chatapp.dao.GroupDao;
 import java.util.List;
 
 public class GroupService {
-    private GroupDao groupDao;
+    private final GroupDao groupDao;
 
     public GroupService(GroupDao groupDao) {
         this.groupDao = groupDao;
@@ -20,17 +20,6 @@ public class GroupService {
         return groupDao.getGroup(id);
     }
 
-    public GroupChat getGroupByName(String name) {
-        return groupDao.getGroupByName(name);
-    }
-
-    public List<GroupChat> getAllGroups() {
-        return groupDao.getAllGroups();
-    }
-
-    public void updateGroup(GroupChat existingGroup) {
-        groupDao.updateGroup(existingGroup);
-    }
     public void addUsersToGroup(Long groupId, List<Long> userIds) {
         groupDao.addUsersToGroup(groupId, userIds);
     }

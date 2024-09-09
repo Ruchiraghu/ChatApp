@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class ScannerUtil {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static int getInt(String prompt) {
         System.out.print(prompt + " ");
@@ -14,11 +14,6 @@ public class ScannerUtil {
             System.out.print(prompt + " ");
         }
         return scanner.nextInt();
-    }
-
-    public static String getString(String prompt) {
-        System.out.print(prompt + " ");
-        return scanner.next();
     }
 
     public static Long getLong(String prompt) {

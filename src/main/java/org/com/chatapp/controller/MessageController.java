@@ -6,9 +6,7 @@ import org.com.chatapp.service.MessageService;
 import org.com.chatapp.entities.Message;
 import org.com.chatapp.service.UserService;
 import org.com.chatapp.utility.ScannerUtil;
-
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Scanner;
 
 public class MessageController {
@@ -20,73 +18,6 @@ public class MessageController {
         this.messageService = messageService;
         this.userService = userService;
         this.sc = new Scanner(System.in);
-    }
-
-    public void handleMessageManagement() throws UserNotFound {
-        boolean running = true;
-        while (running) {
-            System.out.println("Choose an action:\n" +
-                    "1. Send a message\n" +
-                    "2. Get messages by recipient\n" +
-                    "3. Delete a message\n" +
-                    "4. Exit");
-            int choice = sc.nextInt();
-            sc.nextLine();
-            switch (choice) {
-                case 1 -> sendMessage();
-                case 2 -> getMessagesByRecipient();
-                case 3 -> deleteMessage();
-                case 4 -> {
-                    running = false;
-                    System.out.println("Exiting...");
-                }
-                default -> System.out.println("Invalid choice. Please try again.");
-            }
-        }
-    }
-
-    private void sendMessage() throws UserNotFound {
-        System.out.println("Enter sender ID: ");
-        Long senderId = sc.nextLong();
-        System.out.println("Enter receiver ID:");
-        Long receiverId = sc.nextLong();
-        sc.nextLine();
-        System.out.println("Enter message: ");
-        String content = sc.nextLine();
-
-        User sender = userService.getUserById(senderId);
-        User receiver = userService.getUserById(receiverId);
-
-        if (sender == null || receiver == null) {
-            throw new UserNotFound("Sender or receiver not found.");
-        }
-
-        Message message = new Message();
-        message.setSender(sender);
-        message.setReceiver(receiver);
-        message.setContent(content);
-        message.setTimestamp(LocalDateTime.now());
-
-        messageService.sendMessage(message);
-        System.out.println("Message sent successfully!");
-    }
-
-    private void deleteMessage() {
-        System.out.println("Enter message ID to delete: ");
-        Long id = sc.nextLong();
-        sc.nextLine();
-        messageService.deleteMessage(id);
-    }
-    private void getMessagesByRecipient() {
-        System.out.println("Enter recipient ID: ");
-        Long recipientId = sc.nextLong();
-        sc.nextLine();
-        List<Message> messages = messageService.getAllMessageByRecipientId(recipientId);
-        if (messages.isEmpty()) {
-            System.out.println("No messages found for this recipient.");
-        } else {
-            messages.forEach(System.out::println);
-        }
     }
 
     public void chatBetweenUsers() throws UserNotFound {
@@ -105,13 +36,11 @@ public class MessageController {
         System.out.println("Chat started between " + user1.getName() + " and " + user2.getName() + ".");
         System.out.println("Type 'exit' to end the chat.");
 
-        boolean chatting = true;
-        while (chatting) {
+        while (true) {
             // User 1 sends a message
             System.out.print(user1.getName() + ": ");
             String message1 = sc.nextLine();
             if (message1.equalsIgnoreCase("exit")) {
-                chatting = false;
                 break;
             }
 
@@ -126,7 +55,6 @@ public class MessageController {
             System.out.print(user2.getName() + ": ");
             String message2 = sc.nextLine();
             if (message2.equalsIgnoreCase("exit")) {
-                chatting = false;
                 break;
             }
 

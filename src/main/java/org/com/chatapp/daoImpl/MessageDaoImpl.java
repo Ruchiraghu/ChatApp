@@ -37,7 +37,7 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public Message getMessageById(Long id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        Message message = null;
+        Message message;
         try {
             message = entityManager.find(Message.class, id);
         } finally {
@@ -49,7 +49,7 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public List<Message> getAllMessageByRecipientId(Long recipientId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        List<Message> messages = null;
+        List<Message> messages;
         try {
             messages = entityManager.createQuery("SELECT m FROM Message m WHERE m.receiver.id = :recipientId", Message.class)
                     .setParameter("recipientId", recipientId)
@@ -63,7 +63,7 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public List<Message> getConversation(Long userId1, Long userId2) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        List<Message> messages = null;
+        List<Message> messages;
         try {
             messages = entityManager.createQuery("SELECT m FROM Message m WHERE (m.sender.id = :userId1 AND m.receiver.id = :userId2) OR (m.sender.id = :userId2 AND m.receiver.id = :userId1)", Message.class)
                     .setParameter("userId1", userId1)
@@ -124,7 +124,7 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public List<Message> getRecentMessages(int limit) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        List<Message> messages = null;
+        List<Message> messages;
         try {
             messages = entityManager.createQuery("SELECT m FROM Message m ORDER BY m.timestamp DESC", Message.class)
                     .setMaxResults(limit)

@@ -26,12 +26,14 @@ public class GroupController {
     public void groupChat() throws UserNotFound {
         boolean running = true;
         while (running) {
-            System.out.println("\nChoose an action:\n" +
-                    "1. Create group\n" +
-                    "2. Add Users to Group\n" +
-                    "3. View Messages by Group\n" +
-                    "4. Group Chat\n" +
-                    "5. Exit");
+            System.out.println("""
+
+                    Choose an action:
+                    1. Create group
+                    2. Add Users to Group
+                    3. View Messages by Group
+                    4. Group Chat
+                    5. Exit""");
             int choice = sc.nextInt();
             sc.nextLine();  // Consume newline
 
@@ -95,10 +97,11 @@ public class GroupController {
 
         boolean chatting = true;
         while (chatting) {
-            System.out.println("Choose an action:\n" +
-                    "1. Send message\n" +
-                    "2. View all messages\n" +
-                    "3. Exit chat");
+            System.out.println("""
+                    Choose an action:
+                    1. Send message
+                    2. View all messages
+                    3. Exit chat""");
             int choice = sc.nextInt();
             sc.nextLine();  // Consume newline
 
