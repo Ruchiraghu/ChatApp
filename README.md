@@ -135,7 +135,7 @@ Chat ended.
 
 ## Database Configuration
 
-- **MySQL Database**: Update your `hibernate.cfg.xml` to include your database connection details:
+- **MySQL Database**: Update your `persistence.xml` to include your database connection details:
   - `hibernate.connection.url`
   - `hibernate.connection.username`
   - `hibernate.connection.password`
@@ -175,4 +175,3 @@ You can find these dependencies in the `pom.xml` file:
 
 ---
 
-Feel free to customize further based on your specific needs!
